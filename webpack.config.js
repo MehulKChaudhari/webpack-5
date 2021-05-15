@@ -5,13 +5,9 @@ const webpackConfig = {
 	entry: path.resolve(__dirname, "src", "index.js"),
 
 	output: {
-		filename: "[name].[contenthash].bundle.js",
+		filename: "[name].[contenthash].bundle.js", //<--- added contenthash
 		path: path.resolve(__dirname, "dist"),
 		clean: true
-	},
-	devtool: "inline-source-map",
-	devServer: {
-		contentBase: "./dist"
 	},
 	module: {
 		rules: [
@@ -42,21 +38,23 @@ const webpackConfig = {
 			template: path.resolve(__dirname, "src", "index.html")
 		})
 	],
+    //added big package and did code splitting, optimization!!! 
+    
+    optimization:{
+        splitChunks:{
+            cacheGroups:{
+                node_vendors:{
+                    name:"vendor",
+                    test: /[\\/]node_modules[\\/]/,
+                    chunks:"all",
+                    priority:1
+                }
+            }
+        }
+    },
+    devtool: "inline-source-map",
 
-	optimization: {
-		splitChunks: {
-			cacheGroups: {
-				node_vendors: {
-					name: "vendor",
-					test: /[\\/]node_modules[\\/]/,
-					chunks: "all",
-					priority: 1
-				}
-			}
-		}
-	},
-
-	mode: "production"
+	mode: "devlopment"
 };
 
 module.exports = webpackConfig;
